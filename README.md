@@ -1,3 +1,96 @@
+# local_DepMapandBioGrid
+
+A toolset for local analysis of DepMap and BioGRID datasets, enabling bioinformatics research and cancer dependency investigations.
+
+## Overview
+
+This repository provides tools and scripts for working with locally stored DepMap and BioGRID data, allowing for custom analyses of:
+- Cancer cell line dependencies
+- Protein-protein interaction networks
+- Genetic interactions
+- Cancer vulnerability datasets
+
+## Installation
+
+This project requires Python 3.7+ and several dependencies listed in the `requirements.txt` file.
+
+### Setting up your environment
+
+#### Option 1: Using pip
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/claire-goul/local_DepMapandBioGrid.git
+   cd local_DepMapandBioGrid
+   ```
+
+2. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+#### Option 2: Using a virtual environment (recommended)
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/claire-goul/local_DepMapandBioGrid.git
+   cd local_DepMapandBioGrid
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   # Using venv (Python's built-in module)
+   python -m venv venv
+   
+   # Activate the virtual environment
+   # On Windows
+   venv\Scripts\activate
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
+
+3. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+#### Option 3: Using conda
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/claire-goul/local_DepMapandBioGrid.git
+   cd local_DepMapandBioGrid
+   ```
+
+2. Create a conda environment and install dependencies:
+   ```bash
+   conda create -n depmap-biogrid python=3.9
+   conda activate depmap-biogrid
+   pip install -r requirements.txt
+   ```
+
+### Dependencies Overview
+
+The project relies on several Python packages:
+
+- **Core data analysis**: numpy, pandas, scipy
+- **Visualization**: matplotlib, seaborn, plotly
+- **Bioinformatics**: biopython, networkx
+- **Machine Learning**: scikit-learn
+- **Web and data handling**: requests, beautifulsoup4, tqdm
+- **Development**: jupyter, ipykernel
+- **Statistical analysis**: statsmodels
+
+## Data Sources
+
+### DepMap
+The [Cancer Dependency Map (DepMap)](https://depmap.org/portal/) is a resource that provides insights into genetic vulnerabilities across hundreds of cancer cell lines.
+
+### BioGRID
+The [Biological General Repository for Interaction Datasets (BioGRID)](https://thebiogrid.org/) is a curated database of protein-protein interactions, genetic interactions, and chemical interactions.
+
+## Usage
+
 # **Instructions:**
 ## **Part 1 - Generating the Network**
 1) Install Python3 or Later (https://www.python.org/downloads/).
@@ -32,3 +125,8 @@
 8) To adjust edge with based on correlation, go to the Edge Table, select the Edge tab, Select Width> Column: corrscore, Mapping Type: Continuous.
 9) To save the network to import into illustrator, go to File>Network>Export Network as Image> Export File Format: .svg
 10) You now have a coessentiality network with physical protein-protein interactions for your genes of interest! 
+
+## License
+
+Created By Claire Goul, August 2022, MIT License
+
