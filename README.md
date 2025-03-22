@@ -1,10 +1,10 @@
 # **Instructions:**
 ## **Part 1 - Generating the Network**
 1) Install Python3 or Later (https://www.python.org/downloads/).
-2) Download this folder.
-3) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
+2) Download this folder (Code > Download zip) and unzip.
+3) In this downloaded folder (local_DepMapandBioGrid), create an excel file with one column titled Gene, with entries being your genes of interest, 
    and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
-4) Open terminal, navigate to this folder (e.g. `cd Desktop/local_DepMapandBioGrid`)
+4) Open terminal, navigate to local_DepMapandBioGrid (e.g. `cd Desktop/local_DepMapandBioGrid`)
 5) In terminal, run:  `python3 generate_network_final.py`
    You can customize the network generation using these optional command-line arguments:
    - `--threshold <float>`: Correlation threshold (default: 0.2). Correlations must be greater than this value
