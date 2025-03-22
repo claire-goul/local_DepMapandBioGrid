@@ -4,11 +4,19 @@
 2) Download this folder.
 3) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
    and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
-4) Modify any details of interest in generate_network_final.py (see bottom of file excel file name, number of citations in biogrid, etc.) 
+4) Open terminal, navigate to this folder (e.g. `cd Desktop/local_DepMapandBioGrid`)
+5) In terminal, run:  `python3 generate_network_final.py`
+   You can customize the network generation using these optional command-line arguments:
+   - `--threshold <float>`: Correlation threshold (default: 0.2). Correlations must be greater than this value
+   - `--corrpos <True/False>`: If True, get only positive correlation genes; if False, get negative (default: True)
+   - `--num <int>`: Number of correlated genes to include for each gene of interest (default: 3)
+   - `--filters <string>`: Filter for BioGRID interactions (default: 'psi-mi:"MI:0915"(physical association)')
+   - `--numcitations <int>`: Minimum number of citations required for BioGRID interactions (default: 2)
+   
+   Example with custom values:
+   `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3`
    Note that the networks will become quite large and interconnected with more citations or number of correlations.
-5) Open terminal, navigate to this folder (e.g. `cd Desktop/local_DepMapandBioGrid`)
-6) In terminal, run:  `python3 generate_network_final.py`
-7) Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
+   Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
 ## **Part 2 - Displaying the Network**
 0) To plot the network, download Cytoscape (https://cytoscape.org/)
