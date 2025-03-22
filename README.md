@@ -17,7 +17,7 @@
    `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3 --filters  "psi-mi:\"MI:0407\"(direct interaction)" "psi-mi:\"MI:0915\"(physical association)"`
       * *Note that the networks will become quite large and interconnected with more citations or number of correlations.*
       * *Note, the default is to generate one combined network with coessential genes with genes of interest, and add in biogrid interactions of genes of interest to this network.*
-6) This will output the file 'genes_corr_bg_merge.xlsx' (the combined network), the biogrid interactions('genes_bg.xlsx'), and coessential genes ('genes_corr.xlsx') for genes of interest 
+6) This will output the file 'genes_corr_bg_merge.xlsx' (the combined network), the biogrid interactions ('genes_bg.xlsx'), and coessential genes ('genes_corr.xlsx') for genes of interest 
 
 ## **Part 2 - Displaying the Network**
 0) To plot the network, download Cytoscape (https://cytoscape.org/)
