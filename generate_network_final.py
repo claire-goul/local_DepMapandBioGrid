@@ -140,8 +140,8 @@ bg=pd.read_excel('Biogrid_MV-Physical_4.4.243_Human.xlsx')
 genes_of_interest=pd.read_excel('genestest.xlsx')## can read in any excel file to filter the correlation matrix by
 
 #GET BIOGRID INTERACTIONS / COESSENTIAL GENES FOR GENES IN GENE LIST
-corr=get_correlations_edgelist(genes_of_interest,links_filtered,threshold=0.2,corrpos='True',num=3)#if you want the coessential genes only for your gene list, just use this
-edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:0915"(physical association)'],numcitations=2) #if you want the biogrid only for your gene list, just use this
+corr=get_correlations_edgelist(genes_of_interest,links_filtered,threshold=0.2,corrpos='True',num=3)
+edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:0915"(physical association)'],numcitations=2)
 
 #OPTIONS
 #CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
@@ -154,3 +154,4 @@ edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:
 #COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
 corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
 corrwithbgforcorr.to_excel('genes_corr_bg_merge.xlsx')
+
