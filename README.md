@@ -1,10 +1,10 @@
 **Instructions:**
 **Part 1 - Generating the Network**
-0) Make sure you Python3 or later installed
-1) Download this folder.
-2) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
+1) Install Python3 or Later.
+2) Download this folder.
+3) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
    and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
-3) Modify any details of interest in generate_network_final.py (see bottom of file excel file name, number of citations in biogrid, etc.) 
+4) Modify any details of interest in generate_network_final.py (see bottom of file excel file name, number of citations in biogrid, etc.) 
    Note that the networks will become quite large and interconnected with more citations or number of correlations.
 5) Open terminal, navigate to this folder (e.g. cd Desktop/local_DepMapandBioGrid)
 6) In terminal, run:  python3 generate_network_final.py
