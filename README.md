@@ -6,7 +6,7 @@
    and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
 4) Modify any details of interest in generate_network_final.py (see bottom of file excel file name, number of citations in biogrid, etc.) 
    Note that the networks will become quite large and interconnected with more citations or number of correlations.
-5) Open terminal, navigate to this folder (e.g. cd Desktop/local_DepMapandBioGrid)
+5) Open terminal, navigate to this folder (e.g. `cd Desktop/local_DepMapandBioGrid`)
 6) In terminal, run:  `python3 generate_network_final.py`
 7) Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
