@@ -76,7 +76,7 @@ The [Biological General Repository for Interaction Datasets (BioGRID)](https://t
 
 ## Citations
 ### Fireworks (Mendillo Lab)
-https://github.com/mendillolab/fireworks/(https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices) was used to generate the links_achilles.xlsx file 
+https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices was used to generate the links_achilles.xlsx file 
 
 ## Usage
 
