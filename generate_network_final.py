@@ -1,5 +1,6 @@
 ## WRITTEN BY CLAIRE GOUL AUG 2022
 ## MIT LICENSE
+## Revised to fix command line argument handling
 import numpy as np
 import pandas as pd
 import argparse
@@ -142,8 +143,9 @@ parser.add_argument('--corrpos', type=str, default='True',
                     help='If True, get only positive correlation genes; if False, get only negative correlation genes')
 parser.add_argument('--num', type=int, default=3, 
                     help='Number of correlated genes to include for each gene of interest')
-parser.add_argument('--filters', type=list, default=[], 
-                    help='Filter for BioGRID interactions')
+# Modified to properly handle list arguments
+parser.add_argument('--filters', nargs='+', default=[], 
+                    help='List of filters for BioGRID interactions')
 parser.add_argument('--numcitations', type=int, default=2, 
                     help='Minimum number of citations required for BioGRID interactions')
 
@@ -153,9 +155,18 @@ args = parser.parse_args()
 # Convert corrpos string to boolean
 corrpos_bool = True if args.corrpos.lower() == 'true' else False
 
+# Print arguments for debugging
+print("Arguments:")
+print(f"  threshold: {args.threshold}")
+print(f"  corrpos: {corrpos_bool}")
+print(f"  num: {args.num}")
+print(f"  filters: {args.filters}")
+print(f"  numcitations: {args.numcitations}")
+
 #GET BIOGRID INTERACTIONS / COESSENTIAL GENES FOR GENES IN GENE LIST
 corr=get_correlations_edgelist(genes_of_interest, links_filtered, threshold=args.threshold, corrpos=corrpos_bool, num=args.num)
-edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=[args.filters], numcitations=args.numcitations)
+# Pass filters directly - it's already a list
+edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=args.filters, numcitations=args.numcitations)
 
 #OPTIONS
 #CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
@@ -168,4 +179,3 @@ edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=[args.filte
 #COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
 corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
 corrwithbgforcorr[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
-
