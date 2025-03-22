@@ -1,6 +1,6 @@
 # **Instructions:**
 ## **Part 1 - Generating the Network**
-1) Install Python3 or Later.
+1) Install Python3 or Later (https://www.python.org/downloads/).
 2) Download this folder.
 3) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
    and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
