@@ -1,12 +1,8 @@
 # local_DepMapandBioGrid
 
-A toolset for local network analysis of DepMap and BioGRID datasets for your genes of interest.
-
 ## Overview
 
-This repository provides tools and scripts for working with locally stored DepMap and BioGRID data, allowing for custom analyses of:
-- Protein-protein interaction networks
-- Genetic interactions
+This repository provides a toolset for local network analysis of DepMap and BioGRID datasets for your genes of interest.
 
 ## Installation
 
