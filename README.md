@@ -9,11 +9,12 @@
    - `--threshold <float>`: Correlation threshold (default: 0.2). Correlations must be greater than this value
    - `--corrpos <True/False>`: If True, get only positive correlation genes; if False, get negative (default: True)
    - `--num <int>`: Number of correlated genes to include for each gene of interest (default: 3)
-   - `--filters <string>`: Filter for BioGRID interactions (default: 'psi-mi:"MI:0915"(physical association)')
+   - `--filters <list>`: Filter for BioGRID interactions (default: empty list; options include: 'psi-mi:"MI:0407"(direct interaction)',
+      'psi-mi:"MI:0915"(physical association)','psi-mi:"MI:0914"(association)','psi-mi:"MI:0403"(colocalization)')
    - `--numcitations <int>`: Minimum number of citations required for BioGRID interactions (default: 2)
    
    Example with custom values:
-   `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3`
+   `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3 --filters ['psi-mi:"MI:0407"(direct interaction)','psi-mi:"MI:0915"(physical association)']`
    Note that the networks will become quite large and interconnected with more citations or number of correlations.
    Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
