@@ -124,6 +124,7 @@ def get_biogrid_edgelist(genes,bg,filters,numcitations):
         edgelist_biogrid_final=edgelist_biogrid_final.drop(columns=['index'])
         edgelist_biogrid_final=edgelist_biogrid_final.reset_index()
         edgelist_biogrid_final['bg']='yes'
+        edgelist_biogrid_final=edgelist_biogrid_final.drop(columns=['index','level_0','tuples','Hit','Unnamed: 0'])
         return edgelist_biogrid_final
 
 def merge3(list1, list2,list3):
@@ -135,21 +136,21 @@ def merge3(list1, list2,list3):
 ##LOAD IN BIOGRID DN DEPMAP DATA
 links_filtered=pd.read_excel('links_achilles.xlsx')
 
-bg=pd.read_csv('Biogrid_MV-Physical_4.4.243_Human.xlsx')
+bg=pd.read_excel('Biogrid_MV-Physical_4.4.243_Human.xlsx')
 genes_of_interest=pd.read_excel('genestest.xlsx')## can read in any excel file to filter the correlation matrix by
 
 #GET BIOGRID INTERACTIONS / COESSENTIAL GENES FOR GENES IN GENE LIST
 corr=get_correlations_edgelist(genes_of_interest,links_filtered,threshold=0.2,corrpos='True',num=3)#if you want the coessential genes only for your gene list, just use this
 edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:0915"(physical association)'],numcitations=2) #if you want the biogrid only for your gene list, just use this
 
-#edgelist_biogrid.to_excel('genes_bg.xlsx')
-#corr.to_excel('genes_corr.xlsx')
-#you can run the commented lines below if you want to get all the biogrid interactions for the coessential gene pairs only. however, you can also just do this in excel.
-corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
-corrwithbgforcorr.to_excel('genes_bgforcorronly.xlsx')
-
 #OPTIONS
-#CORR: --GET CORR MATRIX FOR ALL GENES IN GENE LIST
-#EDGELIST BIOGRID[0]: --BIOGRID INTERACTORS FOR ALL GENES IN GENE LIST
-#IF YOU WANT NETWORK WITH BOTH, COMBINE BOTH EXCEL FILLES
-#COMBINE: 1)COMBINE BIOGRID AND CORR INTO ONE NETWORK (GET BIOGRID INTERACTIONS ONLY FOR GENES IN GENE LIST). 2) GET BIOGRID INTERACTIONS FOR ALL CORR GENES AND ALL GENEES IN GENE LIST 
+#CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
+#corr.to_excel('genes_corr_.xlsx')
+
+#EDGELIST BIOGRID: GET BIOGRID INTERACTORS FOR ALL GENES IN GENE LIST
+#edgelist_biogrid.to_excel('genes_bg.xlsx')
+
+#DEFAULT IS TO COMBINE:
+#COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
+corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
+corrwithbgforcorr.to_excel('genes_corr_bg_merge.xlsx')
