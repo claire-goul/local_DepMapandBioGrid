@@ -1,6 +1,6 @@
 # local_DepMapandBioGrid
 
-A toolset for local analysis of DepMap and BioGRID datasets, enabling bioinformatics research and cancer dependency investigations.
+A toolset for local network analysis of DepMap and BioGRID datasets for your genes of interest.
 
 ## Overview
 
