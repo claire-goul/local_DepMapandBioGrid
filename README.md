@@ -2,8 +2,7 @@
 ## **Part 1 - Generating the Network**
 1) Install Python3 or Later (https://www.python.org/downloads/).
 2) Download this folder (Code > Download zip) and unzip.
-3) In this downloaded folder (local_DepMapandBioGrid-main), create an excel file with one column titled Gene, with entries being your genes of interest, 
-   and one column titled Hit, with entries being yes (for example, see: 'genestest.xlsx'). 
+3) In this downloaded folder (local_DepMapandBioGrid-main), create an excel file titled 'genestest.xlsx' with one column titled Gene, with entries being your genes of interest, and one column titled Hit, with entries being yes (for example, see the included 'genestest.xlsx'). 
 4) Open terminal, navigate to local_DepMapandBioGrid (e.g. `cd Desktop/local_DepMapandBioGrid-main`)
 5) In terminal, run:  `python3 generate_network_final.py`
    You can customize the network generation using these optional command-line arguments:
