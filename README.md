@@ -5,10 +5,8 @@ A toolset for local analysis of DepMap and BioGRID datasets, enabling bioinforma
 ## Overview
 
 This repository provides tools and scripts for working with locally stored DepMap and BioGRID data, allowing for custom analyses of:
-- Cancer cell line dependencies
 - Protein-protein interaction networks
 - Genetic interactions
-- Cancer vulnerability datasets
 
 ## Installation
 
@@ -72,17 +70,9 @@ This project requires Python 3.7+ and several dependencies listed in the `requir
 ### Dependencies Overview
 
 The project relies on several Python packages:
-
 - **Core data analysis**: numpy, pandas, scipy
-- **Visualization**: matplotlib, seaborn, plotly
-- **Bioinformatics**: biopython, networkx
-- **Machine Learning**: scikit-learn
-- **Web and data handling**: requests, beautifulsoup4, tqdm
-- **Development**: jupyter, ipykernel
-- **Statistical analysis**: statsmodels
-
+  
 ## Data Sources
-
 ### DepMap
 The [Cancer Dependency Map (DepMap)](https://depmap.org/portal/) is a resource that provides insights into genetic vulnerabilities across hundreds of cancer cell lines.
 
@@ -93,11 +83,9 @@ The [Biological General Repository for Interaction Datasets (BioGRID)](https://t
 
 # **Instructions:**
 ## **Part 1 - Generating the Network**
-1) Install Python3 or Later (https://www.python.org/downloads/).
-2) Download this folder (Code > Download zip) and unzip.
-3) In this downloaded folder (local_DepMapandBioGrid-main), create an excel file titled 'genestest.xlsx' with one column titled Gene, with entries being your genes of interest, and one column titled Hit, with entries being yes (for example, see the included 'genestest.xlsx'). 
-4) Open terminal, navigate to local_DepMapandBioGrid (e.g. `cd Desktop/local_DepMapandBioGrid-main`)
-5) In terminal, run:  `python3 generate_network_final.py`
+1) In the local_DepMapandBioGrid-main folder, create an excel file titled 'genestest.xlsx' with one column titled Gene, with entries being your genes of interest, and one column titled Hit, with entries being yes (for example, see the included 'genestest.xlsx'). 
+2) Open terminal, navigate to local_DepMapandBioGrid (e.g. `cd Desktop/local_DepMapandBioGrid-main`)
+3) In terminal, run:  `python3 generate_network_final.py`
    You can customize the network generation using these optional command-line arguments:
    - `--threshold <float>`: Correlation threshold (default: 0.2). Correlations must be greater than this value
    - `--corrpos <True/False>`: If True, get only positive correlation genes; if False, get negative (default: True)
@@ -110,7 +98,7 @@ The [Biological General Repository for Interaction Datasets (BioGRID)](https://t
    `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3 --filters  "psi-mi:\"MI:0407\"(direct interaction)" "psi-mi:\"MI:0915\"(physical association)"`
       * *Note that the networks will become quite large and interconnected with more citations or number of correlations.*
       * *Note, the default is to generate one combined network with coessential genes with genes of interest, and add in biogrid interactions of genes of interest to this network.*
-6) This will output the file 'genes_corr_bg_merge.xlsx' (the combined network), the biogrid interactions ('genes_bg.xlsx'), and coessential genes ('genes_corr.xlsx') for genes of interest 
+4) This will output the file 'genes_corr_bg_merge.xlsx' (the combined network), the biogrid interactions ('genes_bg.xlsx'), and coessential genes ('genes_corr.xlsx') for genes of interest 
 
 ## **Part 2 - Displaying the Network**
 0) To plot the network, download Cytoscape (https://cytoscape.org/)
