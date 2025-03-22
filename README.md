@@ -72,7 +72,7 @@ The project relies on several Python packages (see requirements.txt):
 The [Cancer Dependency Map (DepMap)](https://depmap.org/portal/) is a resource that provides insights into genetic vulnerabilities across hundreds of cancer cell lines.
 
 ### BioGRID
-The [Biological General Repository for Interaction Datasets (BioGRID)](https://thebiogrid.org/) is a curated database of protein-protein interactions, genetic interactions, and chemical interactions.
+The [Biological General Repository for Interaction Datasets (BioGRID)](https://thebiogrid.org/ is a curated database of protein-protein interactions, genetic interactions, and chemical interactions.
 
 ## Citations
 ### Fireworks (Mendillo Lab)
