@@ -1,5 +1,5 @@
-Instructions: 
-Part 1 - Generating the Network
+**Instructions:**
+**Part 1 - Generating the Network**
 0) Make sure you Python3 or later installed
 1) Download this folder.
 2) In this folder, create an excel file with one column titled Gene, with entries being your genes of interest, 
@@ -10,7 +10,7 @@ Part 1 - Generating the Network
 6) In terminal, run:  python3 generate_network_final.py
 7) Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
-   Part 2 - Displaying the Network
+**Part 2 - Displaying the Network**
 0) To plot the network, download Cytoscape https://cytoscape.org/
 1) File> Import>Network From File: genes_corr_bg_merge.xlsx
 2) Select Source Node as Gene, Target Node as Gene1.
