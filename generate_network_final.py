@@ -142,8 +142,8 @@ genes_of_interest=pd.read_excel('genestest.xlsx')## can read in any excel file t
 corr=get_correlations_edgelist(genes_of_interest,links_filtered,threshold=0.2,corrpos='True',num=3)#if you want the coessential genes only for your gene list, just use this
 edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:0915"(physical association)'],numcitations=2) #if you want the biogrid only for your gene list, just use this
 
-#edgelist_biogrid.to_excel('genes_bg_2citations.xlsx')
-#corr.to_excel('genes_corr_top5.xlsx')
+#edgelist_biogrid.to_excel('genes_bg.xlsx')
+#corr.to_excel('genes_corr.xlsx')
 #you can run the commented lines below if you want to get all the biogrid interactions for the coessential gene pairs only. however, you can also just do this in excel.
 corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
 corrwithbgforcorr.to_excel('genes_bgforcorronly.xlsx')
