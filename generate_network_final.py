@@ -37,15 +37,14 @@ def get_correlations_edgelist(genes,links_filtered,threshold,corrpos,num):
 ##INPUTS
 #genes: (excel file) with a column titled 'Gene' with list of genes of interest
 #bg = csv file of all Biogrid interactors for human genes (downloaded from https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-4.4.220/ # BIOGRID-MV-Physical)
-#filters:(list) of filters you want: either 'pull down', 'bioid', or both, or an empty list. you can look at the bg file to see what the possible filters are
+#filters: list of filters you want. default is empty list ([]). You can look at the bg file to see what the possible filters are; for example ['psi-mi:"MI:0407"(direct interaction)']
 ##OUTPUT
 #edgelist_biogrid: file with two columns of  biogrid interactions, 'InteractorA' and 'InteractorB' and 'tuples' column containing a tuple of those
 #also make an option for biogrid only for corr and for hits only 
 def get_biogrid_edgelist(genes,bg,filters,numcitations): 
-        bg=bg.loc[bg['Taxid Interactor A']=='taxid:9606']
         bg_df_final=bg
-        bg_df_final=bg_df_final.reset_index()
-        bg_df_final=bg_df_final[bg_df_final['Interaction Types']==filters[0]]
+        if len(filters)>0:
+                bg_df_final=bg_df_final[bg_df_final['Interaction Types'].isin(filters)]
         bg_df_final=bg_df_final.reset_index()
         bg_df_final=bg_df_final.drop(columns=['index'])
         A=list(bg_df_final['Aliases Interactor A'])
@@ -143,7 +142,7 @@ parser.add_argument('--corrpos', type=str, default='True',
                     help='If True, get only positive correlation genes; if False, get only negative correlation genes')
 parser.add_argument('--num', type=int, default=3, 
                     help='Number of correlated genes to include for each gene of interest')
-parser.add_argument('--filters', type=str, default='psi-mi:"MI:0915"(physical association)', 
+parser.add_argument('--filters', type=list, default=[], 
                     help='Filter for BioGRID interactions')
 parser.add_argument('--numcitations', type=int, default=2, 
                     help='Minimum number of citations required for BioGRID interactions')
