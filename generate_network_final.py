@@ -170,10 +170,10 @@ edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=args.filter
 
 #OPTIONS
 #CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
-#corr.to_excel('genes_corr_.xlsx')
+corr.to_excel('genes_corr.xlsx')
 
 #EDGELIST BIOGRID: GET BIOGRID INTERACTORS FOR ALL GENES IN GENE LIST
-#edgelist_biogrid.to_excel('genes_bg.xlsx')
+edgelist_biogrid.to_excel('genes_bg.xlsx')
 
 #DEFAULT IS TO COMBINE:
 #COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
