@@ -65,9 +65,8 @@ This project requires Python 3.7+ and several dependencies listed in the `requir
 
 ### Dependencies Overview
 
-The project relies on several Python packages:
-- **Core data analysis**: numpy, pandas, scipy
-  
+The project relies on several Python packages (see requirements.txt):
+
 ## Data Sources
 ### DepMap
 The [Cancer Dependency Map (DepMap)](https://depmap.org/portal/) is a resource that provides insights into genetic vulnerabilities across hundreds of cancer cell lines.
