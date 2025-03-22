@@ -14,7 +14,7 @@
    - `--numcitations <int>`: Minimum number of citations required for BioGRID interactions (default: 2)
    
    Example with custom values:
-   `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3 --filters ['psi-mi:"MI:0407"(direct interaction)']`
+   `python3 generate_network_final.py --threshold 0.3 --corrpos True --num 5 --numcitations 3 --filters  "psi-mi:\"MI:0407\"(direct interaction)" "psi-mi:\"MI:0915\"(physical association)"`
    Note that the networks will become quite large and interconnected with more citations or number of correlations.
    Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
