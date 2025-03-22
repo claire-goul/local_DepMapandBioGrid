@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import argparse
 ##get_correlations_edgelist:
-#INPUTS (you can adjust these in line 140)
+#INPUTS 
 #genes: (excel file) with a column titled 'Gene' with list of genes of interest
 #links_filtered (excel file) from generate_corrected_coessentiality downloaded from achilles website https://depmap.org/portal/download/all/
 #threshold (float in range of 0-1), e.g. 0.2: number that correlation score has to be greater than 
@@ -34,7 +34,7 @@ def get_correlations_edgelist(genes,links_filtered,threshold,corrpos,num):
         corr=(toplargestdf.reset_index()).drop(['index'],axis=1)
         return corr
 
-##INPUTS (you can adjust these in line 141)
+##INPUTS
 #genes: (excel file) with a column titled 'Gene' with list of genes of interest
 #bg = csv file of all Biogrid interactors for human genes (downloaded from https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-4.4.220/ # BIOGRID-MV-Physical)
 #filters:(list) of filters you want: either 'pull down', 'bioid', or both, or an empty list. you can look at the bg file to see what the possible filters are
