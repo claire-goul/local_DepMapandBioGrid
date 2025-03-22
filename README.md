@@ -74,7 +74,9 @@ The [Cancer Dependency Map (DepMap)](https://depmap.org/portal/) is a resource t
 ### BioGRID
 The [Biological General Repository for Interaction Datasets (BioGRID)](https://thebiogrid.org/) is a curated database of protein-protein interactions, genetic interactions, and chemical interactions.
 
-[https://github.com/mendillolab/fireworks/(https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices)] was used to generate the links_achilles.xlsx file 
+## Citations
+### Fireworks (Mendillo Lab)
+https://github.com/mendillolab/fireworks/(https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices) was used to generate the links_achilles.xlsx file 
 
 ## Usage
 
