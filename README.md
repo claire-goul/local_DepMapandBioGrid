@@ -11,7 +11,7 @@
 7) Note, the default is to generate one network with coessential genes, and overlay biogrid interactions for genes of interest onto this
 
 ## **Part 2 - Displaying the Network**
-0) To plot the network, download Cytoscape https://cytoscape.org/
+0) To plot the network, download Cytoscape (https://cytoscape.org/)
 1) File> Import>Network From File: genes_corr_bg_merge.xlsx
 2) Select Source Node as Gene, Target Node as Gene1.
 3) Go to Style Tab on the left, and you can change the network style to a nicer one like Solid.
