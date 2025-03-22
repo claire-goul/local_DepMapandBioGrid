@@ -2,18 +2,17 @@
 ## MIT LICENSE
 import numpy as np
 import pandas as pd
-
+import argparse
 ##get_correlations_edgelist:
-#INPUTS 
+#INPUTS (you can adjust these in line 140)
 #genes: (excel file) with a column titled 'Gene' with list of genes of interest
 #links_filtered (excel file) from generate_corrected_coessentiality downloaded from achilles website https://depmap.org/portal/download/all/
-#threshold (float in range of 0-1), e.g. 0.2: number that correlation score has to be greater than
+#threshold (float in range of 0-1), e.g. 0.2: number that correlation score has to be greater than 
 #corrpos (Boolean): if True, get only positive correlation genes; if false, get only negative corr genes
 #num (int): number of correlated genes you want
 #OUTPUT
 #corr: correlation matrix with two columns, 'Gene' and 'Gene1' and their correlation scores ('corrscore')
 
-#if you want negatively correlated genes, put threshold = "-0.2" or whatever cutoff
 def get_correlations_edgelist(genes,links_filtered,threshold,corrpos,num):
         links_filtered_newfinal=pd.merge(links_filtered, genes_of_interest,on=['Gene']) #filter by  genes of interest 
         if corrpos:
@@ -35,7 +34,7 @@ def get_correlations_edgelist(genes,links_filtered,threshold,corrpos,num):
         corr=(toplargestdf.reset_index()).drop(['index'],axis=1)
         return corr
 
-##INPUTS
+##INPUTS (you can adjust these in line 141)
 #genes: (excel file) with a column titled 'Gene' with list of genes of interest
 #bg = csv file of all Biogrid interactors for human genes (downloaded from https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-4.4.220/ # BIOGRID-MV-Physical)
 #filters:(list) of filters you want: either 'pull down', 'bioid', or both, or an empty list. you can look at the bg file to see what the possible filters are
@@ -124,14 +123,11 @@ def get_biogrid_edgelist(genes,bg,filters,numcitations):
         edgelist_biogrid_final=edgelist_biogrid_final.drop(columns=['index'])
         edgelist_biogrid_final=edgelist_biogrid_final.reset_index()
         edgelist_biogrid_final['bg']='yes'
-        edgelist_biogrid_final=edgelist_biogrid_final.drop(columns=['index','level_0','tuples','Hit','Unnamed: 0'])
         return edgelist_biogrid_final
 
 def merge3(list1, list2,list3):
     merged_list = [(list1[i], list2[i],list3[i]) for i in range(0, len(list1))]
     return merged_list
-
-
 
 ##LOAD IN BIOGRID DN DEPMAP DATA
 links_filtered=pd.read_excel('links_achilles.xlsx')
@@ -139,9 +135,28 @@ links_filtered=pd.read_excel('links_achilles.xlsx')
 bg=pd.read_excel('Biogrid_MV-Physical_4.4.243_Human.xlsx')
 genes_of_interest=pd.read_excel('genestest.xlsx')## can read in any excel file to filter the correlation matrix by
 
+# Set up command-line argument parsing
+parser = argparse.ArgumentParser(description='Generate network from gene correlation and BioGRID interaction data')
+parser.add_argument('--threshold', type=float, default=0.2, 
+                    help='Correlation threshold (float in range 0-1). Correlations must be greater than this value')
+parser.add_argument('--corrpos', type=str, default='True', 
+                    help='If True, get only positive correlation genes; if False, get only negative correlation genes')
+parser.add_argument('--num', type=int, default=3, 
+                    help='Number of correlated genes to include for each gene of interest')
+parser.add_argument('--filters', type=str, default='psi-mi:"MI:0915"(physical association)', 
+                    help='Filter for BioGRID interactions')
+parser.add_argument('--numcitations', type=int, default=2, 
+                    help='Minimum number of citations required for BioGRID interactions')
+
+# Parse the arguments
+args = parser.parse_args()
+
+# Convert corrpos string to boolean
+corrpos_bool = True if args.corrpos.lower() == 'true' else False
+
 #GET BIOGRID INTERACTIONS / COESSENTIAL GENES FOR GENES IN GENE LIST
-corr=get_correlations_edgelist(genes_of_interest,links_filtered,threshold=0.2,corrpos='True',num=3)
-edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:0915"(physical association)'],numcitations=2)
+corr=get_correlations_edgelist(genes_of_interest, links_filtered, threshold=args.threshold, corrpos=corrpos_bool, num=args.num)
+edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=[args.filters], numcitations=args.numcitations)
 
 #OPTIONS
 #CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
@@ -153,5 +168,5 @@ edgelist_biogrid=get_biogrid_edgelist(genes_of_interest,bg,filters=['psi-mi:"MI:
 #DEFAULT IS TO COMBINE:
 #COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
 corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
-corrwithbgforcorr.to_excel('genes_corr_bg_merge.xlsx')
+corrwithbgforcorr[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
 
