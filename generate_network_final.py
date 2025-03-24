@@ -1,6 +1,6 @@
 ## WRITTEN BY CLAIRE GOUL AUG 2022
 ## MIT LICENSE
-## Revised to fix command line argument handling
+## Revised to fix command line argument handling and empty edgelist edge case
 import numpy as np
 import pandas as pd
 import argparse
@@ -16,22 +16,53 @@ import argparse
 
 def get_correlations_edgelist(genes,links_filtered,threshold,corrpos,num):
         links_filtered_newfinal=pd.merge(links_filtered, genes_of_interest,on=['Gene']) #filter by  genes of interest 
+        
+        # Check if initial merge produced empty result
+        if links_filtered_newfinal.empty:
+            print("Warning: No genes from the input list found in the correlation dataset.")
+            # Return empty DataFrame with expected columns
+            return pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore'])
+            
         if corrpos:
                 links_filtered_newfinal=links_filtered_newfinal[links_filtered_newfinal['corrscore']>=threshold]#threshold for degree of correlation
+                # Check if filtering by threshold resulted in empty DataFrame
+                if links_filtered_newfinal.empty:
+                    print(f"Warning: No genes have correlation scores >= {threshold}.")
+                    return pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore'])
+                    
                 grouped= links_filtered_newfinal.groupby('Gene')
                 toplargestdf=pd.DataFrame()
                 for var1,subdict in grouped:
                         sub=subdict[subdict['corrscore']>0]
+                        # Check if positive correlations exist for this gene
+                        if sub.empty:
+                            print(f"Warning: No positive correlations found for gene {var1}.")
+                            continue
                         sublargest=sub.nlargest(n=num,columns='corrscore') 
                         toplargestdf=pd.concat([toplargestdf,sublargest])
         else:
                 links_filtered_newfinal=links_filtered_newfinal[links_filtered_newfinal['corrscore']<=threshold]#threshold for degree of correlation
+                # Check if filtering by threshold resulted in empty DataFrame
+                if links_filtered_newfinal.empty:
+                    print(f"Warning: No genes have correlation scores <= {threshold}.")
+                    return pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore'])
+                    
                 grouped= links_filtered_newfinal.groupby('Gene')
                 toplargestdf=pd.DataFrame()
                 for var1,subdict in grouped:
                         sub=subdict[subdict['corrscore']<0]
+                        # Check if negative correlations exist for this gene
+                        if sub.empty:
+                            print(f"Warning: No negative correlations found for gene {var1}.")
+                            continue
                         sublargest=sub.nlargest(n=num,columns='corrscore') 
                         toplargestdf=pd.concat([toplargestdf,sublargest])
+                        
+        # Check if no genes passed all filters
+        if toplargestdf.empty:
+            print("Warning: No genes passed all correlation filters.")
+            return pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore'])
+            
         corr=(toplargestdf.reset_index()).drop(['index'],axis=1)
         return corr
 
@@ -109,17 +140,40 @@ def get_biogrid_edgelist(genes,bg,filters,numcitations):
                        if gene in Bnew[b]:# this bg interaction is for a gene in genes of interest
                                intAfin.append(gene)
                                intBfin.append(Anewog[b][0])#add corresponding A interactor (use the alias gene)
+        
+        # Handle the case where no interactions are found
+        if len(intAfin) == 0 or len(intBfin) == 0:
+            print("Warning: No BioGRID interactions found matching your criteria.")
+            # Return an empty DataFrame with the expected columns
+            empty_df = pd.DataFrame(columns=['Gene', 'Gene1', 'tuples', 'bg'])
+            return empty_df
+            
         edgelist_biogrid=pd.DataFrame()
         edgelist_biogrid['Final IDs Interactor A']=pd.DataFrame(intAfin)
         edgelist_biogrid['Final IDs Interactor B']=pd.DataFrame(intBfin)
         edgelist_biogrid['tuples']=list(zip(edgelist_biogrid['Final IDs Interactor A'],edgelist_biogrid['Final IDs Interactor B']))
-        edgelist_biogrid=edgelist_biogrid.groupby('tuples').filter(lambda x : len(x)>=numcitations) #keep only genes that have more >= numcitations in biogrid
+        
+        # Check if filtering by numcitations would result in an empty DataFrame
+        filtered_edgelist = edgelist_biogrid.groupby('tuples').filter(lambda x : len(x)>=numcitations)
+        if filtered_edgelist.empty:
+            print(f"Warning: No interactions have {numcitations} or more citations. Returning empty DataFrame.")
+            empty_df = pd.DataFrame(columns=['Gene', 'Gene1', 'tuples', 'bg'])
+            return empty_df
+            
+        edgelist_biogrid = filtered_edgelist
         edgelist_biogrid=edgelist_biogrid.reset_index()
         edgelist_biogrid=edgelist_biogrid.rename(columns={'Final IDs Interactor A':'Gene','Final IDs Interactor B':'Gene1'})
         genestuplesbiogrid=list(zip(edgelist_biogrid.Gene, edgelist_biogrid.Gene1))
         edgelist_biogrid=edgelist_biogrid.drop_duplicates(subset='tuples',keep='first')
         edgelist_biogrid=edgelist_biogrid.reset_index()
         edgelist_biogrid_final = edgelist_biogrid.drop(edgelist_biogrid[edgelist_biogrid.Gene==edgelist_biogrid.Gene1].index)
+        
+        # Check if removing self-interactions results in an empty DataFrame
+        if edgelist_biogrid_final.empty:
+            print("Warning: After removing self-interactions, no BioGRID interactions remain.")
+            empty_df = pd.DataFrame(columns=['Gene', 'Gene1', 'tuples', 'bg'])
+            return empty_df
+            
         edgelist_biogrid_final=edgelist_biogrid_final.drop(columns=['index'])
         edgelist_biogrid_final=edgelist_biogrid_final.reset_index()
         edgelist_biogrid_final['bg']='yes'
@@ -168,14 +222,56 @@ corr=get_correlations_edgelist(genes_of_interest, links_filtered, threshold=args
 # Pass filters directly - it's already a list
 edgelist_biogrid=get_biogrid_edgelist(genes_of_interest, bg, filters=args.filters, numcitations=args.numcitations)
 
+# Ensure empty DataFrames have the necessary columns for merge operations
+if corr.empty and 'Gene' not in corr.columns:
+    corr = pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore'])
+
+if edgelist_biogrid.empty and 'Gene' not in edgelist_biogrid.columns:
+    edgelist_biogrid = pd.DataFrame(columns=['Gene', 'Gene1', 'tuples', 'bg'])
+
 #OPTIONS
 #CORR: GET CORR MATRIX FOR ALL GENES IN GENE LIST
-corr.to_excel('genes_corr.xlsx')
+# Handle empty correlation matrix when saving
+if corr.empty:
+    print("Warning: Empty correlation matrix. Creating a minimal file with column headers only.")
+    pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore']).to_excel('genes_corr.xlsx')
+else:
+    corr.to_excel('genes_corr.xlsx')
 
 #EDGELIST BIOGRID: GET BIOGRID INTERACTORS FOR ALL GENES IN GENE LIST
-edgelist_biogrid.to_excel('genes_bg.xlsx')
+# Handle empty edgelist when saving
+if edgelist_biogrid.empty:
+    print("Warning: Empty BioGRID edgelist. Creating a minimal file with column headers only.")
+    pd.DataFrame(columns=['Gene', 'Gene1', 'tuples', 'bg']).to_excel('genes_bg.xlsx')
+else:
+    edgelist_biogrid.to_excel('genes_bg.xlsx')
 
 #DEFAULT IS TO COMBINE:
 #COMBINE BIOGRID AND CORR INTO ONE NETWORK: OVERLAY BIOGRID INTERACTIONS (FOR GENES IN genes_of_interest ONLY) ONTO COESSENTIALITY 
-corrwithbgforcorr = pd.merge(corr, edgelist_biogrid,  how='left', left_on=['Gene','Gene1'], right_on = ['Gene','Gene1'])
-corrwithbgforcorr[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
+# Handle different combinations of empty DataFrames
+if corr.empty and edgelist_biogrid.empty:
+    print("Warning: Both correlation matrix and BioGRID edgelist are empty. Creating a minimal merged file.")
+    pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore', 'bg']).to_excel('genes_corr_bg_merge.xlsx')
+elif corr.empty:
+    print("Warning: Correlation matrix is empty, exporting BioGRID data only.")
+    # Add empty corrscore column to BioGRID data
+    edgelist_with_corr = edgelist_biogrid.copy()
+    edgelist_with_corr['corrscore'] = np.nan
+    edgelist_with_corr[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
+elif edgelist_biogrid.empty:
+    print("Warning: BioGRID edgelist is empty, exporting correlation data only.")
+    # Add empty bg column to correlation data
+    corr_with_bg = corr.copy()
+    corr_with_bg['bg'] = np.nan
+    corr_with_bg[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
+else:
+    # Both DataFrames have data, proceed with merge
+    try:
+        corrwithbgforcorr = pd.merge(corr, edgelist_biogrid, how='left', left_on=['Gene','Gene1'], right_on=['Gene','Gene1'])
+        corrwithbgforcorr[['Gene', 'Gene1', 'corrscore', 'bg']].to_excel('genes_corr_bg_merge.xlsx')
+    except KeyError as e:
+        print(f"Warning: Merge operation failed with error: {str(e)}")
+        print("Creating separate output files instead.")
+        # If merge fails, create separate output with proper structure
+        combined_df = pd.DataFrame(columns=['Gene', 'Gene1', 'corrscore', 'bg'])
+        combined_df.to_excel('genes_corr_bg_merge.xlsx')
