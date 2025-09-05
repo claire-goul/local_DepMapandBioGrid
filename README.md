@@ -6,7 +6,7 @@ This repository provides a toolset for local network analysis of DepMap and BioG
 
 ## Installation
 
-This project requires Python 3.7+ and several dependencies listed in the `requirements.txt` file.
+This project requires Python 3.7+ and several dependencies listed in the `requirements.txt` file. 
 
 ### Setting up your environment
 
@@ -81,6 +81,7 @@ https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices was 
 ## Usage
 
 # **Instructions:**
+# The runtime of this code on the test input dataset  ('genestest.xlsx') is under 5 minutes. This will vary depending on how large your input dataset is. 
 ## **Part 1 - Generating the Network**
 1) In the local_DepMapandBioGrid-main folder, create an excel file titled 'genestest.xlsx' with one column titled Gene, with entries being your genes of interest, and one column titled Hit, with entries being yes (for example, see the included 'genestest.xlsx'). 
 2) Open terminal, navigate to local_DepMapandBioGrid (e.g. `cd Desktop/local_DepMapandBioGrid-main`)
