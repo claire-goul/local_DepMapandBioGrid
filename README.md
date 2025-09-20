@@ -113,7 +113,7 @@ https://github.com/mendillolab/fireworks/tree/master/generate_corr_matrices was 
 8) To adjust edge with based on correlation, go to the Edge Table, select the Edge tab, Select Width> Column: corrscore, Mapping Type: Continuous.
 9) To save the network to import into illustrator, go to File>Network>Export Network as Image> Export File Format: .svg
 10) You now have a coessentiality network with physical protein-protein interactions for your genes of interest! 
-
+11) To overlay additional information about genes in the network (e.g. disease mutations), select File> Import> Table From File. Select the column with your list of genes as the Key, and Import Data as Node Table Columns. This is then imported into the Node Table of the network and you can overlay this info in the Style tab.
 ## License
 
 Created By Claire Goul, August 2022, MIT License
